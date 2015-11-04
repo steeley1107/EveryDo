@@ -44,9 +44,7 @@
     [self.objects addObject:task04];
     [self.objects addObject:task05];
     
-    self.swipeGesture.delegate =self;
     [self.view addGestureRecognizer:self.swipeGesture];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -141,12 +139,18 @@
     
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    
-    if ([touch.view isDescendantOfView:self.tableView]) {
-        return YES;
-    }
-    return NO;
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
 }
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    ToDo *task = [self.objects objectAtIndex:fromIndexPath.row];
+    [self.objects removeObjectAtIndex:fromIndexPath.row];
+    [self.objects insertObject:task atIndex:toIndexPath.row];
+}
+
 
 @end
